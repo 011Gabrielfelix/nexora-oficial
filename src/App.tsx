@@ -59,6 +59,7 @@ function App() {
       email: String(form.get('email') ?? '').trim(),
       message: String(form.get('message') ?? '').trim(),
     });
+    if (error) console.error('Supabase insert failed:', error.message);
     setFormStatus(error ? 'error' : 'success');
     if (!error) event.currentTarget.reset();
   };
