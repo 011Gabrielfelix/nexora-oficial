@@ -4,7 +4,7 @@ import {
   Globe2, Instagram, Layout, Linkedin, Mail, Menu, MessageCircle, MessageSquare, Palette,
   Phone, Search, Send, ShieldCheck, Sparkles, Star, Target, X, Zap,
 } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
 import { useReveal } from '@/hooks/useReveal';
 
 const WHATSAPP_NUMBER = '5586995360721';
@@ -52,6 +52,10 @@ function App() {
     event.preventDefault();
     setFormStatus('sending');
     const form = new FormData(event.currentTarget);
+    if (!isSupabaseConfigured) {
+      setFormStatus('error');
+      return;
+    }
     const { error } = await supabase.from('leads').insert({
       name: String(form.get('name') ?? '').trim(),
       company: String(form.get('company') ?? '').trim() || null,
